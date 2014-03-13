@@ -3,7 +3,17 @@
 class Should extends TestFacade {
     protected $aliases = array(
         'have' => 'assertContains',
-        'eq'   => 'assertEquals'
+        'eq'   => 'assertEquals',
+        'beValid' => 'assertValid',
+        'beNotValid' => 'assertNotValid',
+        'belongsToMany' => 'assertBelongsToMany',
+        'belongsTo' => 'assertBelongsTo',
+        'haveMany' => 'assertHasMany',
+        'haveOne' => 'assertHasOne',
+        'morphMany' => 'assertMorphMany',
+        'morphTo' => 'assertMorphTo',
+        'respondsTo' => 'assertRespondsTo',
+        'haveRelationship' => 'assertRelationship'
     );
 
     protected function getMethod($methodName)
