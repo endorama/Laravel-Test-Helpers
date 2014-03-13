@@ -7,7 +7,17 @@ class Assert extends TestFacade {
         'eq'       => 'assertEquals',
         'has'      => 'assertContains',
         'type'     => 'assertInternalType',
-        'instance' => 'assertInstanceOf'
+        'instance' => 'assertInstanceOf',
+        'isValid' => 'assertValid',
+        'isNotValid' => 'assertNotValid',
+        'belongsToMany' => 'assertBelongsToMany',
+        'belongsTo' => 'assertBelongsTo',
+        'haveMany' => 'assertHasMany',
+        'haveOne' => 'assertHasOne',
+        'morphMany' => 'assertMorphMany',
+        'morphTo' => 'assertMorphTo',
+        'respondsTo' => 'assertRespondsTo',
+        'haveRelationship' => 'assertRelationship'
     );
 
     protected function getMethod($methodName)
