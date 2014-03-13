@@ -1,7 +1,8 @@
 <?php namespace Way\Tests;
 
 abstract class TestFacade extends \PHPUnit_Framework_Assert {
-
+    use ModelHelpers;
+    
     /**
      * Singleton
      * @var array
