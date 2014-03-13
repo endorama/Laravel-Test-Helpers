@@ -67,33 +67,38 @@ trait ModelHelpers {
 
         $args = $this->getArgumentsRelationship($relationship, $class, $type);
 
-        $class = Mockery::mock($class."[$type]");
+        $class = Mockery::mock($class."[$type]")->shouldIgnoreMissing()->asUndefined();
 
         switch(count($args))
         {
             case 1 :
                 $class->shouldReceive($type)
                       ->once()
-                      ->with('/' . str_singular($relationship) . '/i');
+                      ->with('/' . str_singular($relationship) . '/i')
+                      ->andReturn(Mockery::self());
                 break;
             case 2 :
                 $class->shouldReceive($type)
                       ->once()
-                      ->with('/' . str_singular($relationship) . '/i', $args[1]);
+                      ->with('/' . str_singular($relationship) . '/i', $args[1])
+                      ->andReturn(Mockery::self());
                 break;
             case 3 :
                 $class->shouldReceive($type)
                       ->once()
-                      ->with('/' . str_singular($relationship) . '/i', $args[1], $args[2]);
+                      ->with('/' . str_singular($relationship) . '/i', $args[1], $args[2])
+                      ->andReturn(Mockery::self());
                 break;
             case 4 :
                 $class->shouldReceive($type)
                       ->once()
-                      ->with('/' . str_singular($relationship) . '/i', $args[1], $args[2], $args[3]);
+                      ->with('/' . str_singular($relationship) . '/i', $args[1], $args[2], $args[3])
+                      ->andReturn(Mockery::self());
                 break;
             default :
                 $class->shouldReceive($type)
-                      ->once();
+                      ->once()
+                      ->andReturn(Mockery::self());
                 break;
         }
 
@@ -101,16 +106,20 @@ trait ModelHelpers {
     }
 
     public function getArgumentsRelationship($relationship, $class, $type) {
-        $mocked = Mockery::mock($class."[$type]");
+        $mocked = Mockery::mock($class."[$type]")->shouldIgnoreMissing()->asUndefined();
 
+        $args = array();
+        
         $mocked->shouldReceive($type)
               ->once()
-              ->andReturnUsing(function ()
+              ->andReturnUsing(function () use (&$args)
               {
-                return func_get_args();
+                $args = func_get_args();
+                return Mockery::self();
               });
-
-        return $mocked->$relationship();
+        $mocked->$relationship();
+        
+        return $args;
     }
 
 }
