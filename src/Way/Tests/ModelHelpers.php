@@ -62,93 +62,29 @@ trait ModelHelpers {
     }
 
     public function assertRecursiveRelationship($relationship, $class, $type) {
-        $_class = explode('\\', $class);
-        $_class = end($_class);
+      // check that class respond to relationship method
+      $this->assertRespondsTo($relationship, $class);
 
-        $this->assertRespondsTo($relationship, $class);
+      // calculate base class for recursive relationship
+      $baseClass = explode('\\', $class);
+      $baseClass = end($baseClass);
 
-        $args = $this->getArgumentsRelationship($relationship, $class, $type);
+      // create mocked object
+      $mocked = $this->createRelationshipMock($relationship, $class, $type, $baseClass);
 
-        $class = Mockery::mock($class."[$type]")->shouldIgnoreMissing()->asUndefined();
-
-        switch(count($args))
-        {
-            case 1 :
-                $class->shouldReceive($type)
-                      ->once()
-                      ->with('/' . str_singular($_class) . '/i')
-                      ->andReturn(Mockery::self());
-                break;
-            case 2 :
-                $class->shouldReceive($type)
-                      ->once()
-                      ->with('/' . str_singular($_class) . '/i', $args[1])
-                      ->andReturn(Mockery::self());
-                break;
-            case 3 :
-                $class->shouldReceive($type)
-                      ->once()
-                      ->with('/' . str_singular($_class) . '/i', $args[1], $args[2])
-                      ->andReturn(Mockery::self());
-                break;
-            case 4 :
-                $class->shouldReceive($type)
-                      ->once()
-                      ->with('/' . str_singular($_class) . '/i', $args[1], $args[2], $args[3])
-                      ->andReturn(Mockery::self());
-                break;
-            default :
-                $class->shouldReceive($type)
-                      ->once()
-                      ->andReturn(Mockery::self());
-                break;
-        }
-
-        $class->$relationship();
+      // run method to perform assertion
+      $mocked->$relationship();
     }
 
-    public function assertRelationship($relationship, $class, $type)
-    {
-        $this->assertRespondsTo($relationship, $class);
+    public function assertRelationship($relationship, $class, $type) {
+      // check that class respond to relationship method
+      $this->assertRespondsTo($relationship, $class);
 
-        $args = $this->getArgumentsRelationship($relationship, $class, $type);
+      // create mocked object ( baseClass is the relationship )
+      $mocked = $this->createRelationshipMock($relationship, $class, $type, $relationship);
 
-        $class = Mockery::mock($class."[$type]")->shouldIgnoreMissing()->asUndefined();
-
-        switch(count($args))
-        {
-            case 1 :
-                $class->shouldReceive($type)
-                      ->once()
-                      ->with('/' . str_singular($relationship) . '/i')
-                      ->andReturn(Mockery::self());
-                break;
-            case 2 :
-                $class->shouldReceive($type)
-                      ->once()
-                      ->with('/' . str_singular($relationship) . '/i', $args[1])
-                      ->andReturn(Mockery::self());
-                break;
-            case 3 :
-                $class->shouldReceive($type)
-                      ->once()
-                      ->with('/' . str_singular($relationship) . '/i', $args[1], $args[2])
-                      ->andReturn(Mockery::self());
-                break;
-            case 4 :
-                $class->shouldReceive($type)
-                      ->once()
-                      ->with('/' . str_singular($relationship) . '/i', $args[1], $args[2], $args[3])
-                      ->andReturn(Mockery::self());
-                break;
-            default :
-                $class->shouldReceive($type)
-                      ->once()
-                      ->andReturn(Mockery::self());
-                break;
-        }
-
-        $class->$relationship();
+      // run method to perform assertion
+      $class->$relationship();
     }
 
     public function getArgumentsRelationship($relationship, $class, $type) {
@@ -166,6 +102,59 @@ trait ModelHelpers {
         $mocked->$relationship();
         
         return $args;
+    }
+
+    /**
+     * Add correct args to $type method in $class
+     * 
+     * @return Mockery::Mock the mocked object with correct functionality
+     */
+    private function createRelationshipMock($relationship, $class, $type, $baseClass) {
+      // get arguments for relationship
+      $args = $this->getArgumentsRelationship($relationship, $class, $type);
+      
+      // create base mocked object
+      $mocked = Mockery::mock($class."[$type]")->shouldIgnoreMissing()->asUndefined();
+      
+      // set correct arguments on mock
+      switch(count($args)) {
+        case 1 :
+          $mocked
+            ->shouldReceive($type)
+            ->once()
+            ->with('/' . str_singular($baseClass) . '/i')
+            ->andReturn(Mockery::self());
+          break;
+        case 2 :
+          $mocked
+            ->shouldReceive($type)
+            ->once()
+            ->with('/' . str_singular($baseClass) . '/i', $args[1])
+            ->andReturn(Mockery::self());
+          break;
+        case 3 :
+          $mocked
+            ->shouldReceive($type)
+            ->once()
+            ->with('/' . str_singular($baseClass) . '/i', $args[1], $args[2])
+            ->andReturn(Mockery::self());
+          break;
+        case 4 :
+          $mocked
+            ->shouldReceive($type)
+            ->once()
+            ->with('/' . str_singular($baseClass) . '/i', $args[1], $args[2], $args[3])
+            ->andReturn(Mockery::self());
+          break;
+        default :
+          $mocked
+          ->shouldReceive($type)
+          ->once()
+          ->andReturn(Mockery::self());
+          break;
+      }
+
+      return $mocked;
     }
 
 }
