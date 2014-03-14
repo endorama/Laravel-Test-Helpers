@@ -80,7 +80,7 @@ abstract class TestFacade extends \PHPUnit_Framework_Assert {
      * @param  string $methodName
      * @return boolean
      */
-    protected function isAnAlias($methodName)
+    public function isAnAlias($methodName)
     {
         return array_key_exists($methodName, $this->aliases);
     }
