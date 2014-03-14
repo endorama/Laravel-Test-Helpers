@@ -2,6 +2,7 @@
 
 abstract class TestFacade extends \PHPUnit_Framework_Assert {
     use ModelHelpers;
+    use TypeHelpers;
     
     /**
      * Singleton
