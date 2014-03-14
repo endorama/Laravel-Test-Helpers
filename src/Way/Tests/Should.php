@@ -14,7 +14,8 @@ class Should extends TestFacade {
         'morphTo' => 'assertMorphTo',
         'respondsTo' => 'assertRespondsTo',
         'haveRecursiveRelationship' => 'assertRecursiveRelationship',
-        'haveRelationship' => 'assertRelationship'
+        'haveRelationship' => 'assertRelationship',
+        'beBoolean' => 'assertBoolean'
     );
 
     protected function getMethod($methodName)

@@ -18,7 +18,8 @@ class Assert extends TestFacade {
         'morphTo' => 'assertMorphTo',
         'respondsTo' => 'assertRespondsTo',
         'haveRecursiveRelationship' => 'assertRecursiveRelationship',
-        'haveRelationship' => 'assertRelationship'
+        'haveRelationship' => 'assertRelationship',
+        'isBoolean' => 'assertBoolean'
     );
 
     protected function getMethod($methodName)

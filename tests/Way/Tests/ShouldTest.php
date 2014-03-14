@@ -59,8 +59,11 @@ class ShouldTest extends PHPUnit_Framework_TestCase {
     $this->doMethodCheck('haveRelationship');
   }
 
-  # privates 
+  public function testShouldRespondToBeBoolean() {
+    $this->doMethodCheck('beBoolean');
+  }
 
+  # privates 
   /**
    * Check fo alias, not for real method execution, cause to really use them
    * you have to include the relative trait
