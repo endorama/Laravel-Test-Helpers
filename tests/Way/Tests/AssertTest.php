@@ -8,7 +8,7 @@ class AssertTest extends PHPUnit_Framework_TestCase {
   // public function tearDown() {}
 
   public function testShouldRespondToHave() {
-    $this->doMethodCheck('have');
+    $this->doMethodCheck('has');
   }
 
   public function testShouldRespondToEq() {
@@ -16,11 +16,11 @@ class AssertTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testShouldRespondToBeValid() {
-    $this->doMethodCheck('beValid');
+    $this->doMethodCheck('isValid');
   }
 
   public function testShouldRespondToBeNotValid() {
-    $this->doMethodCheck('beNotValid');
+    $this->doMethodCheck('isNotValid');
   }
 
   public function testShouldRespondToBelongsToMany() {
@@ -48,7 +48,7 @@ class AssertTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testShouldRespondToRespondTo() {
-    $this->doMethodCheck('respondTo');
+    $this->doMethodCheck('respondsTo');
   }
 
   public function testShouldRespondToHaveRecursiveRelationship() {
@@ -61,8 +61,15 @@ class AssertTest extends PHPUnit_Framework_TestCase {
 
   # privates 
 
+  /**
+   * Check fo alias, not for real method execution, cause to really use them
+   * you have to include the relative trait
+   */
   private function doMethodCheck($method) {
     $msg = "Expected the '$this->class' class to have method, '$method'.";
-    $this->assertTrue(is_callable($this->class . '::' . $method), $msg);
+
+    $instance = Way\Tests\Assert::getInstance();
+
+    $this->assertTrue($instance->isAnAlias($method), $msg);
   }
 }

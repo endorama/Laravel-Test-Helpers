@@ -47,8 +47,8 @@ class ShouldTest extends PHPUnit_Framework_TestCase {
     $this->doMethodCheck('morphTo');
   }
 
-  public function testShouldRespondToRespondTo() {
-    $this->doMethodCheck('respondTo');
+  public function testShouldRespondsToRespondTo() {
+    $this->doMethodCheck('respondsTo');
   }
 
   public function testShouldRespondToHaveRecursiveRelationship() {
@@ -61,8 +61,15 @@ class ShouldTest extends PHPUnit_Framework_TestCase {
 
   # privates 
 
+  /**
+   * Check fo alias, not for real method execution, cause to really use them
+   * you have to include the relative trait
+   */
   private function doMethodCheck($method) {
     $msg = "Expected the '$this->class' class to have method, '$method'.";
-    $this->assertTrue(is_callable($this->class . '::' . $method), $msg);
+
+    $instance = Way\Tests\Should::getInstance();
+
+    $this->assertTrue($instance->isAnAlias($method), $msg);
   }
 }
