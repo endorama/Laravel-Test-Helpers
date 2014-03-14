@@ -92,7 +92,7 @@ trait ModelHelpers {
       $mocked = $this->createRelationshipMock($relationship, $class, $type, $relationship);
 
       // run method to perform assertion
-      $class->$relationship();
+      $mocked->$relationship();
     }
 
     /**
