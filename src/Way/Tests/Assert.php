@@ -17,6 +17,7 @@ class Assert extends TestFacade {
         'morphMany' => 'assertMorphMany',
         'morphTo' => 'assertMorphTo',
         'respondsTo' => 'assertRespondsTo',
+        'haveRecursiveRelationship' => 'assertRecursiveRelationship',
         'haveRelationship' => 'assertRelationship'
     );
 
